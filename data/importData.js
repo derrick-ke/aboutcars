@@ -5,21 +5,26 @@ require('dotenv').config({ path: './config.env' });
 require('../db/db');
 const Car = require('../models/Car');
 
-const url = path.join(__dirname, 'data.json');
+const cars = JSON.parse(fs.readFileSync(`${__dirname}/cars.json`, 'utf8'));
 
-const importData = () => {
-  fs.readFileSync(url, async (err, data) => {
-    console.log(JSON.parse(data));
-
-    await Car.save(data);
-  });
-  console.log('Data has been imported successfully');
+const importData = async () => {
+  try {
+    await Car.create(cars);
+    console.log('Data has been imported successfully');
+  } catch (error) {
+    console.log(error);
+  }
   process.exit();
 };
 
 const deleteData = async () => {
-  await Car.deleteMany();
-  console.log('Data has been deleted successfully');
+  try {
+    await Car.deleteMany();
+    console.log('Data has been deleted successfully');
+    process.exit();
+  } catch (error) {
+    console.log(error);
+  }
   process.exit();
 };
 

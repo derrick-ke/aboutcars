@@ -1,103 +1,89 @@
+const sanitizeBody = require('../utils/sanitizeBody');
+const catchAsync = require('../utils/catchAsync');
 const Car = require('../models/Car');
 
-const sanitizeBody = (body) => {
-  const params = {
-    make: body.make,
-    model: body.model,
-    year: body.year,
-    trim: body.trim,
-    engine: {
-      fuel: body.fuel,
-      engineSize: body.engineSize,
-      cylinders: body.cylinders,
-      valves: body.valves,
-      transmission: body.transmission,
-      gearBox: body.gearBox,
-      drivetrain: body.drivetrain,
-    },
-  };
-  return params;
-};
+exports.getAllCars = catchAsync(async (req, res) => {
+  const queryObj = { ...req.query };
+  const excludedFields = ['sort', 'page', 'limit'];
+  excludedFields.forEach((field) => delete queryObj[field]);
 
-exports.getAllCars = async (req, res) => {
-  try {
-    const cars = await Car.find();
-    res.status(200).json({
-      status: 'success',
-      data: cars,
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'error',
-      message: error,
-    });
+  let queryStr = JSON.stringify(queryObj);
+  queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
+
+  let query = Car.find(JSON.parse(queryStr));
+
+  if (req.query.sort) {
+    query = query.sort(req.query.sort);
+  } else {
+    query = query.sort('createdAt');
   }
-};
 
-exports.getCar = async (req, res) => {
-  try {
-    const car = await Car.findById(req.params.id);
+  if (req.query.page && req.query.limit) {
+    const page = req.query.page - 1;
+    const limit = req.query.limit;
+    const skip = page * limit;
 
-    if (!car) {
-      throw new Error('Car not found');
-    }
-
-    res.status(200).json({
-      status: 'success',
-      data: car,
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'error',
-      message: error,
-    });
+    query = query.skip(skip).limit(limit);
+  } else {
+    query = query.limit(10);
   }
-};
 
-exports.createCar = async (req, res) => {
-  try {
-    const params = sanitizeBody(req.body);
+  // Filter results
+  const cars = await query;
 
-    const car = await Car.create(params);
+  res.status(200).json({
+    status: 'success',
+    results: cars.length,
+    data: cars,
+  });
+});
 
-    res.status(200).json({
-      status: 'success',
-      data: car,
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'error',
-      message: error,
-    });
+exports.getCar = catchAsync(async (req, res) => {
+  const car = await Car.findById(req.params.id);
+
+  if (!car) {
+    throw new Error('Car not found');
   }
-};
 
-exports.updateCar = async (req, res) => {
-  try {
-    const params = sanitizeBody(req.body);
+  res.status(200).json({
+    status: 'success',
+    data: car,
+  });
+});
 
-    const car = await Car.findByIdAndUpdate(
-      req.params.id,
-      params,
-      {
-        new: true,
-        runValidators: true,
-      },
-      { $elemMatch: { '$engine.$_id': params.engine.id } }
-    );
+exports.createCar = catchAsync(async (req, res) => {
+  const bodyParams = sanitizeBody(req.body);
 
-    if (!car) {
-      throw new Error('Car not found');
-    }
+  const car = await Car.create(bodyParams);
 
-    res.status(200).json({
-      status: 'success',
-      data: car,
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'error',
-      message: error,
-    });
+  res.status(200).json({
+    status: 'success',
+    data: car,
+  });
+});
+
+exports.updateCar = catchAsync(async (req, res) => {
+  const bodyParams = sanitizeBody(req.body);
+
+  const car = await Car.findByIdAndUpdate(req.params.id, bodyParams, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!car) {
+    throw new Error('Car not found');
   }
-};
+
+  res.status(200).json({
+    status: 'success',
+    data: car,
+  });
+});
+
+exports.deleteCar = catchAsync(async (req, res) => {
+  await Car.deleteOne(req.params.id);
+
+  res.status(204).json({
+    status: 'success',
+  });
+});

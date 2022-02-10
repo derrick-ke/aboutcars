@@ -1,0 +1,43 @@
+[{
+  "_id": {
+    "$oid": "620553a925a6919a2a730bdd"
+  },
+  "make": "Chevrolet",
+  "model": "Camaro",
+  "year": 2019,
+  "fuel": "Petrol"
+},{
+  "_id": {
+    "$oid": "6205315c12bc4b13ddcd78d6"
+  },
+  "make": "Toyota",
+  "model": "Fielder",
+  "year": 2009,
+  "fuel": "Diesel",
+  "drivetrain": "Petrol",
+  "trim": "Standard"
+},{
+  "_id": {
+    "$oid": "62053cb5ef35b66fcc403c6c"
+  },
+  "make": "Toyota",
+  "model": "Fielder",
+  "year": 2009,
+  "fuel": "Diesel"
+},{
+  "_id": {
+    "$oid": "6205485bc3565bf74b8f5118"
+  },
+  "make": "BMW",
+  "model": "M5",
+  "year": 2019,
+  "fuel": "Petrol"
+},{
+  "_id": {
+    "$oid": "6205489ac3565bf74b8f511d"
+  },
+  "make": "Chevrolet",
+  "model": "Camaro",
+  "year": 2019,
+  "fuel": "Petrol"
+}]

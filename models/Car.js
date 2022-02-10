@@ -1,6 +1,24 @@
 const mongoose = require('mongoose');
 
-const engineSchema = mongoose.Schema({
+const carSchema = mongoose.Schema({
+  make: {
+    type: 'String',
+    trim: true,
+    required: true,
+  },
+  model: {
+    type: 'String',
+    trim: true,
+    required: true,
+  },
+  year: {
+    type: 'Number',
+    trim: true,
+    required: true,
+  },
+  trim: {
+    type: 'String',
+  },
   engineSize: {
     type: 'String',
     trim: true,
@@ -25,29 +43,9 @@ const engineSchema = mongoose.Schema({
     type: 'String',
     trim: true,
   },
-});
-
-const carSchema = mongoose.Schema({
-  make: {
-    type: 'String',
-    trim: true,
-    required: true,
-  },
-  model: {
-    type: 'String',
-    trim: true,
-    required: true,
-  },
-  year: {
-    type: 'Number',
-    trim: true,
-    required: true,
-  },
-  trim: {
-    type: 'String',
-  },
-  engine: {
-    type: engineSchema,
+  createdAt: {
+    type: 'Date',
+    default: new Date(Date.now()),
   },
 });
 

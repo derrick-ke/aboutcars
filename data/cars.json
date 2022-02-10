@@ -1,0 +1,28 @@
+[
+  {
+    "make": "Toyota",
+    "model": "Fielder",
+    "year": 2009,
+    "fuel": "Diesel",
+    "drivetrain": "Petrol",
+    "trim": "Standard"
+  },
+  {
+    "make": "Toyota",
+    "model": "Fielder",
+    "year": 2009,
+    "fuel": "Diesel"
+  },
+  {
+    "make": "BMW",
+    "model": "M5",
+    "year": 2019,
+    "fuel": "Petrol"
+  },
+  {
+    "make": "Chevrolet",
+    "model": "Camaro",
+    "year": 2019,
+    "fuel": "Petrol"
+  }
+]

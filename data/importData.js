@@ -1,6 +1,4 @@
-const path = require('path');
 const fs = require('fs');
-const mongoose = require('mongoose');
 require('dotenv').config({ path: './config.env' });
 require('../db/db');
 const Car = require('../models/Car');

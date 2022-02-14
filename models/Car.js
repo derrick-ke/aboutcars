@@ -19,6 +19,7 @@ const carSchema = mongoose.Schema({
   trim: {
     type: 'String',
   },
+  // ENGINE
   engineSize: {
     type: 'String',
     trim: true,
@@ -46,6 +47,39 @@ const carSchema = mongoose.Schema({
   createdAt: {
     type: 'Date',
     default: new Date(Date.now()),
+  },
+  // DIMENSIONS
+  fuelCapacity: {
+    type: 'String',
+  },
+  weight: {
+    type: 'String',
+  },
+  length: {
+    type: 'String',
+  },
+  width: {
+    type: 'String',
+  },
+  height: {
+    type: 'String',
+  },
+  wheelbase: {
+    type: 'String',
+  },
+  // PERFORMANCE
+  power: {
+    type: 'String',
+  },
+  topSpeed: {
+    type: 'String',
+  },
+  // CABIN & LUGGAGE
+  doors: {
+    type: 'String',
+  },
+  seats: {
+    type: 'String',
   },
 });
 

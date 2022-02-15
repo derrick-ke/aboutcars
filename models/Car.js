@@ -24,14 +24,6 @@ const carSchema = mongoose.Schema({
     type: 'String',
     trim: true,
   },
-  cylinders: {
-    type: 'Number',
-    trim: true,
-  },
-  valves: {
-    type: 'Number',
-    trim: true,
-  },
   fuel: {
     type: 'String',
     trim: true,
@@ -81,6 +73,7 @@ const carSchema = mongoose.Schema({
   seats: {
     type: 'String',
   },
+  features: [],
 });
 
 const Car = mongoose.model('Car', carSchema);

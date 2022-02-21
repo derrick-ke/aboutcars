@@ -5,6 +5,7 @@ const carSchema = mongoose.Schema({
     type: 'String',
     trim: true,
     required: true,
+    unique: true,
   },
   model: {
     type: 'String',
@@ -12,7 +13,7 @@ const carSchema = mongoose.Schema({
     required: true,
   },
   year: {
-    type: 'Number',
+    type: ['Number', 'The year must be a number'],
     trim: true,
     required: true,
   },

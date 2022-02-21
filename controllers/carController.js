@@ -1,5 +1,6 @@
 const sanitizeBody = require('../utils/sanitizeBody');
 const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 const Car = require('../models/Car');
 
 exports.getAllCars = catchAsync(async (req, res) => {
@@ -38,11 +39,11 @@ exports.getAllCars = catchAsync(async (req, res) => {
   });
 });
 
-exports.getCar = catchAsync(async (req, res) => {
+exports.getCar = catchAsync(async (req, res, next) => {
   const car = await Car.findById(req.params.id);
 
   if (!car) {
-    throw new Error('Car not found');
+    return next(new AppError('Car not found with that ID', 404));
   }
 
   res.status(200).json({
@@ -62,7 +63,7 @@ exports.createCar = catchAsync(async (req, res) => {
   });
 });
 
-exports.updateCar = catchAsync(async (req, res) => {
+exports.updateCar = catchAsync(async (req, res, next) => {
   const bodyParams = sanitizeBody(req.body);
 
   const car = await Car.findByIdAndUpdate(req.params.id, bodyParams, {
@@ -71,7 +72,7 @@ exports.updateCar = catchAsync(async (req, res) => {
   });
 
   if (!car) {
-    throw new Error('Car not found');
+    return next(new AppError('Car not found with that ID', 404));
   }
 
   res.status(200).json({
@@ -80,8 +81,12 @@ exports.updateCar = catchAsync(async (req, res) => {
   });
 });
 
-exports.deleteCar = catchAsync(async (req, res) => {
-  await Car.deleteOne(req.params.id);
+exports.deleteCar = catchAsync(async (req, res, next) => {
+  const car = await Car.deleteOne(req.params.id);
+
+  if (!car) {
+    return next(new AppError('Car not found with that ID', 404));
+  }
 
   res.status(204).json({
     status: 'success',
